@@ -13,7 +13,7 @@ function Entry({ id, title, content }) {
     let res = await fetch(`/api/delete-entry?id=${id}`, { method: 'DELETE' })
     let json = await res.json()
     if (!res.ok) throw Error(json.message)
-    mutate('/api/get-entries')
+    mutate('/api/entries/get-entries')
     setDeleting(false)
   }
   return (
