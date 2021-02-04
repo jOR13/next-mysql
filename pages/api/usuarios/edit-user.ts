@@ -24,7 +24,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const results = await query(
       `
-      UPDATE entries
+      UPDATE users
       SET username = ?, email = ?, password = ?, phone = ?, address = ?, fullName = ?, role_id = ?, image_id = ?
       WHERE id = ?
       `,

@@ -22,7 +22,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const results = await query(
       `
-      UPDATE entries
+      UPDATE mascotas
       SET nombre = ?, tipo = ?, raza = ?, direccion = ?, descripcion = ?, contacto = ?, users_id = ?, image_id = ?
       WHERE id = ?
       `,
