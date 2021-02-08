@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "bad-words": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "clsx": "^1.1.1",
     "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
     "next": "latest",
+    "nextjs-cors": "^1.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-loading-skeleton": "^2.1.1",
