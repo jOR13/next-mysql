@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
     optionsSuccessStatus: 200,
   });
 
-  let { id, qr_devices_id } = req.body;
+  let { id, mascotas_id } = req.body;
   try {
     if (!id) {
       return res
@@ -19,14 +19,10 @@ const handler: NextApiHandler = async (req, res) => {
         .json({ message: "`id`,`title`, and `content` are all required" });
     }
 
-    if (qr_devices_id === null) {
-
-        qr_devices_id = "null";
-        
-    }
+   
 
     const results = await query(
-      `UPDATE mascotas SET qr_devices_id = ${qr_devices_id} WHERE id = ${id}`
+      `UPDATE qr_devices SET mascotas_id = ${mascotas_id} WHERE id = ${id}`
     );
 
     return res.json(results);

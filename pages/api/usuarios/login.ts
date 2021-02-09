@@ -32,13 +32,10 @@ const handler: NextApiHandler = async (req, res) => {
     // );
 
     const results = await query(
-      `SELECT id, username, email, password,  phone, address, fullName, role_id, image_id FROM users
-                WHERE email = ?
-            `,
+      `SELECT id, username, email, password,  phone, address, fullName, role_id, image_id FROM users WHERE email = ?`,
       email
     );
-
-    if (results[0].image_id != null && results[0].role_id != null) {
+    if (results[0].role_id != null) {
       const roleRes = await query(
         `
 SELECT *
@@ -48,6 +45,10 @@ WHERE id = ?
         results[0].role_id
       );
 
+      results[0].role_id = roleRes;
+    }
+
+    if (results[0].image_id != null) {
       const imgRes = await query(
         `
 SELECT *
@@ -57,7 +58,6 @@ WHERE id = ?
         results[0].image_id
       );
 
-      results[0].role_id = roleRes;
       results[0].image_id = imgRes;
     }
 

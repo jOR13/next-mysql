@@ -1,8 +1,15 @@
 import { NextApiHandler } from "next";
 import { query } from "../../../lib/db";
 import { verify } from "jsonwebtoken";
+import NextCors from "nextjs-cors";
 
 const handler: NextApiHandler = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET"],
+    origin: "http://localhost:3001",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const KEY = "asdasdasfdfasdasfdsgsfdgsfgsfgsfg56sf5sdf";
   try {
     const auth = req.headers.authorization.replace('Bearer ','');
@@ -18,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
         LIMIT 10
     `);
 
-          if (results[0].image_id != null && results[0].role_id != null) {
+          if (results[0].image_id != null || results[0].role_id != null) {
             const roleRes = await query(
               `
   SELECT *

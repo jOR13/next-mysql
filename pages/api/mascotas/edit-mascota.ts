@@ -22,8 +22,7 @@ const handler: NextApiHandler = async (req, res) => {
     descripcion,
     contacto,
     users_id,
-    image_id,
-    qr_devices_id,
+    image_id
   } = req.body;
   try {
     if (!id) {
@@ -35,7 +34,7 @@ const handler: NextApiHandler = async (req, res) => {
     const results = await query(
       `
       UPDATE mascotas
-      SET nombre = ?, tipo = ?, raza = ?, direccion = ?, descripcion = ?, contacto = ?, users_id = ?, image_id = ?, qr_devices_id = ?,
+      SET nombre = ?, tipo = ?, raza = ?, direccion = ?, descripcion = ?, contacto = ?, users_id = ?, image_id = ?
       WHERE id = ?
       `,
       [
@@ -48,7 +47,6 @@ const handler: NextApiHandler = async (req, res) => {
         users_id,
         image_id,
         id,
-        qr_devices_id,
       ]
     );
 

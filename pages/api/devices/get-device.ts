@@ -1,7 +1,14 @@
 import { NextApiHandler } from 'next'
+import NextCors from 'nextjs-cors';
 import { query } from '../../../lib/db'
 
 const handler: NextApiHandler = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET"],
+    origin: "http://localhost:3001",
+    optionsSuccessStatus: 200,
+  });
   const { id } = req.query
   try {
     if (!id) {
@@ -18,31 +25,36 @@ const handler: NextApiHandler = async (req, res) => {
       id
     )
 
-    const usrRes = await query(
-      `
-    SELECT *
-    FROM users
-    WHERE id = ?
-  `,
-      results[0].users_id
-    );
-
-    const imgRes = await query(
-      `
-    SELECT *
-    FROM image
-    WHERE id = ?
-  `,
-      results[0].image_id
-    );
-
-    results[0].users_id = usrRes;
-    results[0].image_id = imgRes;
-
-    return res.json(results[0])
-  } catch (e) {
-    res.status(500).json({ message: e.message })
-  }
-}
-
-export default handler
+    if (results.length === 0) {
+      return res.json([]);
+    } else {
+      if (results[0].users_id != null) {
+        const usrRes = await query(
+          `SELECT * FROM users WHERE id = ?`,
+          results[0].users_id
+        );
+        results[0].users_id = usrRes;
+      }
+  
+      if (results[0].mascotas_id != null) {
+        const masRes = await query(
+          `SELECT * FROM mascotas WHERE id = ?`,
+          results[0].mascotas_id
+        );
+  
+        results[0].mascotas_id = masRes;
+      }
+  
+    
+    }
+  
+  
+      
+      return res.json(results);
+    } catch (e) {
+      res.status(500).json({ message: e.message });
+    }
+  };
+  
+  export default handler;
+  

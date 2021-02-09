@@ -35,6 +35,19 @@ const handler: NextApiHandler = async (req, res) => {
         results[0].image_id = imgRes;
       }
 
+      if (results[0].qr_devices_id != null) {
+        const qrRes = await query(
+          `
+    SELECT *
+    FROM qr_devices
+    WHERE id = ?
+  `,
+          results[0].qr_devices_id
+        );
+  
+        results[0].qr_devices_id = qrRes;
+      }
+
       return res.json(results);
     }
   } catch (e) {

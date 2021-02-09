@@ -16,6 +16,30 @@ const handler: NextApiHandler = async (req, res) => {
       LIMIT 10
   `);
 
+  if (results.length === 0) {
+    return res.json([]);
+  } else {
+    if (results[0].users_id != null) {
+      const usrRes = await query(
+        `SELECT * FROM users WHERE id = ?`,
+        results[0].users_id
+      );
+      results[0].users_id = usrRes;
+    }
+
+    if (results[0].mascotas_id != null) {
+      const masRes = await query(
+        `SELECT * FROM mascotas WHERE id = ?`,
+        results[0].mascotas_id
+      );
+
+      results[0].mascotas_id = masRes;
+    }
+
+  
+  }
+
+
     
     return res.json(results);
   } catch (e) {
