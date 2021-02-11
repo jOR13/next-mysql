@@ -12,47 +12,46 @@ const handler: NextApiHandler = async (req, res) => {
   });
   const KEY = "asdasdasfdfasdasfdsgsfdgsfgsfgsfg56sf5sdf";
   try {
-    const auth = req.headers.authorization.replace('Bearer ','');
-    
-    return verify(
-      auth!,
-      KEY,
-      async function (err, decoded) {
-        if (!err && decoded) {
-          const results = await query(`
+    const auth = req.headers.authorization.replace("Bearer ", "");
+
+    return verify(auth!, KEY, async function (err, decoded) {
+      if (!err && decoded) {
+        const results = await query(`
         SELECT * FROM users
         ORDER BY id DESC
         LIMIT 10
     `);
 
-          if (results[0].image_id != null || results[0].role_id != null) {
-            const roleRes = await query(
-              `
+        if (results[0].role_id != null) {
+          const roleRes = await query(
+            `
   SELECT *
   FROM role
   WHERE id = ?
   `,
-              results[0].role_id
-            );
+            results[0].role_id
+          );
 
-            const imgRes = await query(
-              `
+          results[0].role_id = roleRes;
+        }
+
+        if (results[0].image_id != null) {
+          const imgRes = await query(
+            `
   SELECT *
   FROM image
   WHERE id = ?
   `,
-              results[0].image_id
-            );
+            results[0].image_id
+          );
 
-            results[0].role_id = roleRes;
-            results[0].image_id = imgRes;
-          }
-          return res.json(results);
-        } else {
-          return res.json("Sorry you are not authenticated");
+          results[0].image_id = imgRes;
         }
+        return res.json(results);
+      } else {
+        return res.json("Sorry you are not authenticated");
       }
-    );
+    });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
