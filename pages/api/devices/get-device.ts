@@ -6,7 +6,8 @@ const handler: NextApiHandler = async (req, res) => {
   await NextCors(req, res, {
     // Options
     methods: ["GET"],
-    origin: "http://localhost:3001",
+    // origin: "http://localhost:3001",
+    origin: "http://10.0.2.2:8081",
     optionsSuccessStatus: 200,
   });
   const { id } = req.query
@@ -25,7 +26,7 @@ const handler: NextApiHandler = async (req, res) => {
       id
     )
 
-    if (results.length === 0) {
+    if (results) {
       return res.json([]);
     } else {
       if (results[0].users_id != null) {

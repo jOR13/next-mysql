@@ -16,7 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
       LIMIT 10
   `);
 
-  if (results.length === 0) {
+  if (results) {
     return res.json([]);
   } else {
     if (results[0].users_id != null) {

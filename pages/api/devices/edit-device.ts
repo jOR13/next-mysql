@@ -43,7 +43,7 @@ const handler: NextApiHandler = async (req, res) => {
         mascotas_id,
         users_id,
       ]
-    ]
+    
     );
 
     return res.json(results);
